@@ -21,21 +21,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9.15.4
+          run_install: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build
         run: pnpm build
@@ -48,6 +49,18 @@ jobs:
         with:
           path: ./dist
 
+      - name: Build failure summary
+        if: failure()
+        run: |
+          {
+            echo '## GitHub Pages 构建失败'
+            echo ''
+            echo '- 触发方式: `${{ github.event_name }}`'
+            echo '- 分支/引用: `${{ github.ref }}`'
+            echo '- 失败位置: build job'
+            echo '- 排查建议: 查看失败步骤日志，重点检查 `pnpm install --frozen-lockfile` 与 `pnpm build`。'
+          } >> "$GITHUB_STEP_SUMMARY"
+
   deploy:
     environment:
       name: github-pages
@@ -59,3 +72,15 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Deploy failure summary
+        if: failure()
+        run: |
+          {
+            echo '## GitHub Pages 发布失败'
+            echo ''
+            echo '- 触发方式: `${{ github.event_name }}`'
+            echo '- 分支/引用: `${{ github.ref }}`'
+            echo '- 失败位置: deploy job'
+            echo '- 排查建议: 查看 `Deploy to GitHub Pages` 步骤日志，确认 Pages 权限、artifact 上传与环境状态。'
+          } >> "$GITHUB_STEP_SUMMARY"
