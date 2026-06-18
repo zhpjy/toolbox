@@ -154,8 +154,15 @@ export function App() {
 
           <div className="flex flex-wrap items-center gap-2 pb-4 text-xs text-muted-foreground">
             <Github className="h-3.5 w-3.5" />
-            <span>工具逻辑来自 Git 源码，收藏、历史和用例保存在 IndexedDB。</span>
-            <Button variant="link" size="sm" className="h-auto p-0 text-xs" onClick={() => setSearchQuery("")}>显示全部工具</Button>
+            <span>项目源码已开源在 GitHub，工具逻辑来自仓库代码，收藏、历史和用例保存在 IndexedDB。</span>
+            <a
+              href="https://github.com/zhpjy/toolbox"
+              target="_blank"
+              rel="noreferrer"
+              className="text-xs text-primary underline-offset-4 hover:underline"
+            >
+              github.com/zhpjy/toolbox
+            </a>
           </div>
         </section>
       </main>
