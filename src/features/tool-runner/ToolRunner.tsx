@@ -1,18 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react"
-import { Copy, Eraser, Play, Save, Star } from "lucide-react"
-import type { SavedCase, ToolRunHistory } from "@/storage/db"
+import { Copy, Eraser, Play, Star } from "lucide-react"
+import type { ToolRunHistory } from "@/storage/db"
 import { simpleHash } from "@/storage/indexeddb-storage-adapter"
 import type { RegisteredTool, ToolDiagnostic } from "@/tool-runtime/types"
 import { Badge } from "@/shared/components/ui/badge"
 import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/shared/components/ui/card"
-import { Input } from "@/shared/components/ui/input"
-import { Textarea } from "@/shared/components/ui/textarea"
-import { Separator } from "@/shared/components/ui/separator"
 import { ToolHistoryPanel } from "@/features/tool-history/ToolHistoryPanel"
 import { recordHistory } from "@/features/tool-history/historyService"
-import { SavedCasePanel } from "@/features/saved-cases/SavedCasePanel"
-import { addSavedCase } from "@/features/saved-cases/savedCaseService"
 import { DiagnosticsOutput } from "./DiagnosticsOutput"
 import { formatToolOutput } from "./formatOutput"
 import { JsonToolInput, JsonToolOutput } from "./JsonToolRunner"
@@ -25,10 +20,6 @@ export type ToolRunnerProps = {
   isFavorite: boolean
   onFavoriteChange: (favorite: boolean) => Promise<void> | void
   onRunCommitted: () => Promise<void> | void
-}
-
-function createDefaultCaseName(toolName: string) {
-  return `${toolName} ${new Date().toLocaleString()}`
 }
 
 async function copyToClipboard(text: string) {
@@ -54,8 +45,6 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
   const [durationMs, setDurationMs] = useState<number | undefined>()
   const [isRunning, setIsRunning] = useState(false)
   const [copyStatus, setCopyStatus] = useState<string | undefined>()
-  const [caseName, setCaseName] = useState("")
-  const [caseNote, setCaseNote] = useState("")
   const [refreshKey, setRefreshKey] = useState(0)
   const lastAutoRecordRef = useRef<{ hash: string; at: number } | undefined>()
 
@@ -67,8 +56,6 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
     setError(undefined)
     setDurationMs(undefined)
     setCopyStatus(undefined)
-    setCaseName("")
-    setCaseNote("")
     lastAutoRecordRef.current = undefined
   }, [tool.manifest.id])
 
@@ -149,25 +136,8 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
     setError(undefined)
   }
 
-  async function handleSaveCase() {
-    await addSavedCase({
-      toolId: tool.manifest.id,
-      name: caseName.trim() || createDefaultCaseName(tool.manifest.name),
-      input,
-      output,
-      note: caseNote.trim() || undefined
-    })
-    setCaseName("")
-    setCaseNote("")
-    setRefreshKey((value) => value + 1)
-  }
-
   function handleLoadHistory(history: ToolRunHistory) {
     handleLoadValue(history.input, history.output)
-  }
-
-  function handleLoadSavedCase(savedCase: SavedCase) {
-    handleLoadValue(savedCase.input, savedCase.output)
   }
 
   function renderInput() {
@@ -276,34 +246,11 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
               复制结果
             </Button>
           </div>
-
-          <Separator />
-
-          <div className="grid gap-3 lg:grid-cols-[1fr_1fr_auto] lg:items-end">
-            <div className="space-y-1">
-              <label className="text-sm font-medium">用例名称</label>
-              <Input value={caseName} onChange={(event) => setCaseName(event.target.value)} placeholder="留空则自动命名" />
-            </div>
-            <div className="space-y-1">
-              <label className="text-sm font-medium">备注</label>
-              <Textarea
-                value={caseNote}
-                onChange={(event) => setCaseNote(event.target.value)}
-                placeholder="可选"
-                className="min-h-10"
-              />
-            </div>
-            <Button variant="secondary" onClick={handleSaveCase} disabled={!input.trim()}>
-              <Save className="mr-2 h-4 w-4" />
-              保存用例
-            </Button>
-          </div>
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 xl:grid-cols-2">
+      <div className="grid gap-4">
         <ToolHistoryPanel toolId={tool.manifest.id} refreshKey={refreshKey} onLoad={handleLoadHistory} />
-        <SavedCasePanel toolId={tool.manifest.id} refreshKey={refreshKey} onLoad={handleLoadSavedCase} />
       </div>
     </div>
   )
