@@ -23,3 +23,7 @@ declare module "daff" {
     align(): unknown
   }
 }
+
+declare module "daff/lib/core.js" {
+  export * from "daff"
+}
