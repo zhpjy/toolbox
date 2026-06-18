@@ -110,6 +110,28 @@ export const toolSearchIndex = [
     "text": "提取邮箱 从文本中提取邮箱地址，默认去重并保留首次出现顺序 提取类 邮箱 Email 正则 文本提取 email extract 提取 email 邮件地址"
   },
   {
+    "id": "fields-to-dml-sql",
+    "name": "字段转 DML 语句",
+    "description": "根据字段名自动推断类型并生成建表 SQL",
+    "category": "SQL",
+    "tags": [
+      "SQL",
+      "DML",
+      "DDL",
+      "建表",
+      "字段"
+    ],
+    "aliases": [
+      "字段转SQL",
+      "字段转建表语句",
+      "fields to sql"
+    ],
+    "inputKind": "text",
+    "outputKind": "text",
+    "autoRun": true,
+    "text": "字段转 DML 语句 根据字段名自动推断类型并生成建表 SQL SQL SQL DML DDL 建表 字段 字段转SQL 字段转建表语句 fields to sql"
+  },
+  {
     "id": "json-format",
     "name": "JSON 格式化",
     "description": "校验并格式化 JSON，输出缩进后的 JSON 内容",
