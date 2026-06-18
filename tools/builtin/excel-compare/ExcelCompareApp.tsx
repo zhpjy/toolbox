@@ -237,6 +237,7 @@ function SpreadsheetPane({
             stretchH="all"
             height={420}
             licenseKey="non-commercial-and-evaluation"
+            readOnly
             contextMenu
             manualColumnResize
             manualRowResize
@@ -400,7 +401,7 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
               <RefreshCcw className="mr-2 h-4 w-4" />
               Reset
             </Button>
-            <p className="text-xs leading-5 text-muted-foreground">上传后自动读取首个 Sheet，也可直接在表格中粘贴/编辑数据再执行 Diff。</p>
+            <p className="text-xs leading-5 text-muted-foreground">上传后自动读取首个 Sheet，切换工作表后可执行 Diff 查看差异。</p>
           </CardContent>
         </Card>
       </div>
