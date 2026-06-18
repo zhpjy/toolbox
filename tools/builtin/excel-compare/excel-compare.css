@@ -1,0 +1,69 @@
+.excel-compare-sheet .handsontable td,
+.excel-compare-sheet .handsontable th {
+  white-space: pre-wrap;
+}
+
+.excel-compare-diff .htDimmed {
+  color: inherit;
+}
+
+.excel-compare-diff .handsontable td.spec,
+.excel-compare-diff .handsontable th.spec,
+.excel-compare-legend-spec {
+  background: rgba(99, 102, 241, 0.18) !important;
+}
+
+.excel-compare-diff .handsontable td.header,
+.excel-compare-diff .handsontable th.header {
+  background: rgba(59, 130, 246, 0.16) !important;
+  font-weight: 700;
+}
+
+.excel-compare-diff .handsontable td.index,
+.excel-compare-diff .handsontable th.index {
+  background: rgba(148, 163, 184, 0.12) !important;
+  color: rgb(71 85 105);
+}
+
+.excel-compare-diff .handsontable td.add,
+.excel-compare-diff .handsontable th.add,
+.excel-compare-legend-add {
+  background: rgba(34, 197, 94, 0.2) !important;
+}
+
+.excel-compare-diff .handsontable td.remove,
+.excel-compare-diff .handsontable th.remove,
+.excel-compare-legend-remove {
+  background: rgba(239, 68, 68, 0.2) !important;
+}
+
+.excel-compare-diff .handsontable td.modify,
+.excel-compare-diff .handsontable th.modify,
+.excel-compare-legend-modify {
+  background: rgba(99, 102, 241, 0.22) !important;
+}
+
+.excel-compare-diff .handsontable td.move,
+.excel-compare-diff .handsontable th.move,
+.excel-compare-legend-move {
+  background: rgba(250, 204, 21, 0.25) !important;
+}
+
+.excel-compare-diff .handsontable td.conflict,
+.excel-compare-diff .handsontable th.conflict,
+.excel-compare-legend-conflict {
+  background: rgba(249, 115, 22, 0.25) !important;
+}
+
+.excel-compare-diff .handsontable td.null,
+.excel-compare-diff .handsontable th.null,
+.excel-compare-diff .handsontable td.gap,
+.excel-compare-diff .handsontable th.gap,
+.excel-compare-legend-null {
+  color: rgb(100 116 139);
+  background: rgba(148, 163, 184, 0.12) !important;
+}
+
+.excel-compare-legend {
+  border: 1px solid transparent;
+}

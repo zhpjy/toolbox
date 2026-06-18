@@ -1,6 +1,10 @@
-export type ToolInputKind = "text" | "json" | "sql"
+import type { ComponentType, LazyExoticComponent } from "react"
 
-export type ToolOutputKind = "text" | "json" | "diagnostics"
+export type ToolInputKind = "text" | "json" | "sql" | "app"
+
+export type ToolOutputKind = "text" | "json" | "diagnostics" | "app"
+
+export type ToolKind = "standard" | "app"
 
 export type ToolManifest = {
   id: string
@@ -9,6 +13,7 @@ export type ToolManifest = {
   category: string
   tags: string[]
   aliases?: string[]
+  kind?: ToolKind
   inputKind: ToolInputKind
   outputKind: ToolOutputKind
   autoRun?: boolean
@@ -38,6 +43,17 @@ export type Tool<Input = unknown, Output = unknown> = {
   manifest: ToolManifest
   examples?: ToolExample<Input, Output>[]
   run: ToolRun<Input, Output>
+  component?: ComponentType<ToolAppComponentProps> | LazyExoticComponent<ComponentType<ToolAppComponentProps>>
+}
+
+export type ToolAppComponentProps = {
+  tool: RegisteredTool
+  activeExample?: {
+    name: string
+    input: unknown
+    output?: unknown
+    nonce: number
+  }
 }
 
 export type DiagnosticSeverity = "error" | "warning" | "info"

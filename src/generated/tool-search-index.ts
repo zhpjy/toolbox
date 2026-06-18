@@ -66,6 +66,29 @@ export const toolSearchIndex = [
     "text": "行去重 按行去重，保留每个唯一行的首次出现位置 文本处理 行处理 去重 文本 unique lines dedupe lines 删除重复行"
   },
   {
+    "id": "excel-compare",
+    "name": "Excel Compare",
+    "description": "对比 Excel Sheet，支持上传、切换 Sheet、编辑、粘贴与高亮 Diff",
+    "category": "Excel / 表格",
+    "tags": [
+      "Excel",
+      "XLSX",
+      "Diff",
+      "表格",
+      "Compare"
+    ],
+    "aliases": [
+      "excel diff",
+      "xlsx compare",
+      "表格对比",
+      "sheet diff"
+    ],
+    "inputKind": "app",
+    "outputKind": "app",
+    "autoRun": false,
+    "text": "Excel Compare 对比 Excel Sheet，支持上传、切换 Sheet、编辑、粘贴与高亮 Diff Excel / 表格 Excel XLSX Diff 表格 Compare excel diff xlsx compare 表格对比 sheet diff"
+  },
+  {
     "id": "extract-email",
     "name": "提取邮箱",
     "description": "从文本中提取邮箱地址，默认去重并保留首次出现顺序",

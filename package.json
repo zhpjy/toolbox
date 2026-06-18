@@ -15,14 +15,18 @@
     "check": "pnpm generate:tools && pnpm validate:tools && tsc -b"
   },
   "dependencies": {
+    "@handsontable/react": "^16.2.0",
     "@radix-ui/react-slot": "^1.1.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "daff": "^1.4.2",
     "dexie": "^4.0.11",
+    "handsontable": "^17.1.0",
     "lucide-react": "^0.468.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.6.0",
+    "xlsx": "^0.18.5",
     "zustand": "^5.0.2"
   },
   "devDependencies": {

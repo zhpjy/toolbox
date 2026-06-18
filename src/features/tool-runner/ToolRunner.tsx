@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react"
+import { Suspense, useEffect, useMemo, useRef, useState } from "react"
 import { Copy, Eraser, Play, Star } from "lucide-react"
 import type { ToolRunHistory } from "@/storage/db"
 import { simpleHash } from "@/storage/indexeddb-storage-adapter"
@@ -39,6 +39,93 @@ async function copyToClipboard(text: string) {
 }
 
 export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted }: ToolRunnerProps) {
+  async function recordRecentUsage() {
+    await recordHistory({
+      toolId: tool.manifest.id,
+      input: "",
+      output: undefined,
+      durationMs: 0,
+      title: tool.manifest.name
+    })
+    await onRunCommitted()
+  }
+
+  if (tool.manifest.kind === "app" && tool.component) {
+    const AppToolComponent = tool.component
+    const [activeExample, setActiveExample] = useState<
+      | {
+          name: string
+          input: unknown
+          output?: unknown
+          nonce: number
+        }
+      | undefined
+    >()
+
+    useEffect(() => {
+      setActiveExample(undefined)
+    }, [tool.manifest.id])
+
+    useEffect(() => {
+      void recordRecentUsage()
+    }, [tool.manifest.id])
+
+    return (
+      <Card>
+        <CardHeader className="space-y-3">
+          <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-start">
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <CardTitle>{tool.manifest.name}</CardTitle>
+                <Badge variant="outline">{tool.manifest.category}</Badge>
+                <Badge variant="secondary">应用工具</Badge>
+              </div>
+              <CardDescription>{tool.manifest.description}</CardDescription>
+              <div className="flex flex-wrap gap-1.5">
+                {tool.manifest.tags.map((tag) => (
+                  <Badge key={tag} variant="secondary">
+                    {tag}
+                  </Badge>
+                ))}
+              </div>
+              {tool.examples && tool.examples.length > 0 ? (
+                <div className="flex flex-wrap items-center gap-2 pt-1">
+                  <span className="text-sm text-muted-foreground">示例：</span>
+                  {tool.examples.map((example) => (
+                    <Button
+                      key={example.name}
+                      variant="outline"
+                      size="sm"
+                      onClick={() =>
+                        setActiveExample({
+                          name: example.name,
+                          input: example.input,
+                          output: example.output,
+                          nonce: Date.now()
+                        })
+                      }
+                    >
+                      {example.name}
+                    </Button>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+            <Button variant={isFavorite ? "default" : "outline"} onClick={() => onFavoriteChange(!isFavorite)}>
+              <Star className="mr-2 h-4 w-4" />
+              {isFavorite ? "已收藏" : "收藏"}
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent>
+          <Suspense fallback={<div className="rounded-lg border border-dashed p-8 text-center text-sm text-muted-foreground">工具加载中...</div>}>
+            <AppToolComponent tool={tool} activeExample={activeExample} />
+          </Suspense>
+        </CardContent>
+      </Card>
+    )
+  }
+
   const [input, setInput] = useState("")
   const [output, setOutput] = useState<unknown>(undefined)
   const [error, setError] = useState<string | undefined>()

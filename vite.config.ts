@@ -22,18 +22,20 @@ function inlineBuildAssets() {
           const scriptTagPattern = new RegExp(
             `<script\\s+type="module"\\s+crossorigin\\s+src="(?:\\.?/)?${item.fileName.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}"></script>`
           )
-
-          html = html.replace(scriptTagPattern, () => `<script type="module">${item.code}</script>`)
-          delete bundle[item.fileName]
+          if (scriptTagPattern.test(html)) {
+            html = html.replace(scriptTagPattern, () => `<script type="module">${item.code}</script>`)
+            delete bundle[item.fileName]
+          }
         }
 
         if (item.fileName.endsWith(".css") && typeof item.source === "string") {
           const styleTagPattern = new RegExp(
             `<link\\s+rel="stylesheet"\\s+crossorigin\\s+href="(?:\\.?/)?${item.fileName.replace(/[.*+?^${}()|[\\]\\\\]/g, "\\$&")}">`
           )
-
-          html = html.replace(styleTagPattern, () => `<style>${item.source}</style>`)
-          delete bundle[item.fileName]
+          if (styleTagPattern.test(html)) {
+            html = html.replace(styleTagPattern, () => `<style>${item.source}</style>`)
+            delete bundle[item.fileName]
+          }
         }
       }
 
@@ -49,12 +51,7 @@ export default defineConfig({
   build: {
     assetsInlineLimit: Number.MAX_SAFE_INTEGER,
     cssCodeSplit: false,
-    modulePreload: false,
-    rollupOptions: {
-      output: {
-        inlineDynamicImports: true
-      }
-    }
+    modulePreload: false
   },
   resolve: {
     alias: {
