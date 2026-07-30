@@ -12,6 +12,10 @@ type ParsedManifest = {
   inputKind: string
   outputKind: string
   autoRun?: boolean
+  inputCount?: number
+  outputCount?: number
+  inputLabels?: string[]
+  outputLabels?: string[]
 }
 
 const __filename = fileURLToPath(import.meta.url)
@@ -59,6 +63,11 @@ function readBooleanField(source: string, key: string): boolean | undefined {
   return match ? match[1] === "true" : undefined
 }
 
+function readNumberField(source: string, key: string): number | undefined {
+  const match = source.match(new RegExp(`${key}\\s*:\\s*(\\d+)`))
+  return match ? Number(match[1]) : undefined
+}
+
 function readStringArrayField(source: string, key: string): string[] {
   const match = source.match(new RegExp(`${key}\\s*:\\s*\\[([\\s\\S]*?)\\]`))
   if (!match) return []
@@ -77,7 +86,11 @@ function readManifest(toolDir: string): ParsedManifest {
     aliases: aliases.length > 0 ? aliases : undefined,
     inputKind: readStringField(source, "inputKind"),
     outputKind: readStringField(source, "outputKind"),
-    autoRun: readBooleanField(source, "autoRun")
+    autoRun: readBooleanField(source, "autoRun"),
+    inputCount: readNumberField(source, "inputCount"),
+    outputCount: readNumberField(source, "outputCount"),
+    inputLabels: readStringArrayField(source, "inputLabels"),
+    outputLabels: readStringArrayField(source, "outputLabels")
   }
 }
 
@@ -114,6 +127,10 @@ function generate() {
     aliases: manifest.aliases ?? [],
     inputKind: manifest.inputKind,
     outputKind: manifest.outputKind,
+    inputCount: manifest.inputCount ?? 1,
+    outputCount: manifest.outputCount ?? 1,
+    inputLabels: manifest.inputLabels ?? [],
+    outputLabels: manifest.outputLabels ?? [],
     autoRun: manifest.autoRun ?? false,
     text: [
       manifest.name,

@@ -18,6 +18,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "驼峰转烤串命名 将 camelCase 或 PascalCase 转换为 kebab-case 文本处理 命名 字符串 前端 kebab-case camelCase 驼峰转横线 驼峰转短横线 camel to kebab"
   },
@@ -42,6 +46,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "sql",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": false,
     "text": "DDL 生成 SELECT 根据 Oracle DDL 或带 COMMENT 的字段清单生成 SELECT 语句 SQL / Oracle SQL DDL Oracle SELECT 字段 COMMENT 建表语句转查询 表结构生成查询 字段列表 ddl to select"
   },
@@ -62,6 +70,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "行去重 按行去重，保留每个唯一行的首次出现位置 文本处理 行处理 去重 文本 unique lines dedupe lines 删除重复行"
   },
@@ -85,6 +97,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "app",
     "outputKind": "app",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": false,
     "text": "Excel Compare 对比 Excel Sheet，支持上传、切换 Sheet、编辑、粘贴与高亮 Diff Excel / 表格 Excel XLSX Diff 表格 Compare excel diff xlsx compare 表格对比 sheet diff"
   },
@@ -106,6 +122,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "提取邮箱 从文本中提取邮箱地址，默认去重并保留首次出现顺序 提取类 邮箱 Email 正则 文本提取 email extract 提取 email 邮件地址"
   },
@@ -128,8 +148,43 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "字段转 DML 语句 根据字段名自动推断类型并生成建表 SQL SQL SQL DML DDL 建表 字段 字段转SQL 字段转建表语句 fields to sql"
+  },
+  {
+    "id": "formula-analysis",
+    "name": "公式计算",
+    "description": "代入变量计算四则运算公式，支持括号、+ - * /、数字和变量名",
+    "category": "数学计算",
+    "tags": [
+      "公式",
+      "计算",
+      "四则运算",
+      "变量代入"
+    ],
+    "aliases": [
+      "formula",
+      "公式计算",
+      "表达式计算"
+    ],
+    "inputKind": "text",
+    "outputKind": "text",
+    "inputCount": 2,
+    "outputCount": 2,
+    "inputLabels": [
+      "公式",
+      "变量"
+    ],
+    "outputLabels": [
+      "公式代入",
+      "计算结果"
+    ],
+    "autoRun": true,
+    "text": "公式计算 代入变量计算四则运算公式，支持括号、+ - * /、数字和变量名 数学计算 公式 计算 四则运算 变量代入 formula 公式计算 表达式计算"
   },
   {
     "id": "json-format",
@@ -149,6 +204,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "json",
     "outputKind": "json",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": false,
     "text": "JSON 格式化 校验并格式化 JSON，输出缩进后的 JSON 内容 JSON / 编码 JSON 格式化 pretty 校验 json pretty json formatter 格式化 json"
   },
@@ -170,6 +229,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "json",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": false,
     "text": "JSON 压缩 校验 JSON 并输出无多余空白的紧凑 JSON 字符串 JSON / 编码 JSON 压缩 minify 校验 json minify json compact 压缩 json"
   },
@@ -192,6 +255,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "烤串转驼峰命名 将 kebab-case 或下划线分隔命名转换为 camelCase 文本处理 命名 字符串 前端 kebab-case camelCase 横线转驼峰 短横线转驼峰 kebab to camel"
   },
@@ -214,6 +281,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "行转 SQL IN 子句 按换行分隔多行文本，每行转成 SQL IN 子句中的引用值 SQL SQL IN 拼接 行处理 in clause 行转IN sql in lines to in"
   },
@@ -234,6 +305,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "小写转大写 将输入文本全部转换为大写 文本处理 大小写 字符串 uppercase 转大写 upper case to upper"
   },
@@ -256,6 +331,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "sql",
     "outputKind": "diagnostics",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": false,
     "text": "Oracle 字段命名检查 检查 Oracle 字段名是否符合大写下划线命名，并限制长度不超过 30 个字符 SQL / Oracle Oracle 字段 命名规范 校验 snake_case 字段规范检查 oracle column check 字段长度检查"
   },
@@ -275,6 +354,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "去空行 删除空行和只包含空白字符的行 文本处理 行处理 空行 文本 remove empty lines 删除空行"
   },
@@ -295,6 +378,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "行排序 对输入文本逐行按字典序排序 文本处理 行处理 排序 文本 sort sort lines 文本排序"
   },
@@ -315,6 +402,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "去除每行首尾空格 逐行去除首尾空白，保留原始行顺序 文本处理 行处理 trim 空格 文本 trim lines 去行首尾空格"
   },
@@ -335,6 +426,10 @@ export const toolSearchIndex = [
     ],
     "inputKind": "text",
     "outputKind": "text",
+    "inputCount": 1,
+    "outputCount": 1,
+    "inputLabels": [],
+    "outputLabels": [],
     "autoRun": true,
     "text": "大写转小写 将输入文本全部转换为小写 文本处理 大小写 字符串 lowercase 转小写 lower case to lower"
   }

@@ -18,6 +18,14 @@ export type ToolManifest = {
   outputKind: ToolOutputKind
   autoRun?: boolean
   debounceMs?: number
+  /** 输入槽位数量，未设置时默认为 1，必须为正整数 */
+  inputCount?: number
+  /** 输出槽位数量，未设置时默认为 1，必须为正整数 */
+  outputCount?: number
+  /** 输入槽位的人类可读名称，数量必须与 inputCount 一致 */
+  inputLabels?: string[]
+  /** 输出槽位的人类可读名称，数量必须与 outputCount 一致 */
+  outputLabels?: string[]
   version?: string
   author?: string
   homepage?: string
@@ -67,4 +75,4 @@ export type ToolDiagnostic = {
   ruleId?: string
 }
 
-export type RegisteredTool = Tool<string, unknown>
+export type RegisteredTool = Tool<any, unknown>

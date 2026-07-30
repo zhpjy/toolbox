@@ -25,6 +25,33 @@ function readStringField(source: string, key: string): string {
   return match ? JSON.parse(`"${match[1]}"`) as string : ""
 }
 
+function readNumberField(source: string, key: string): number | undefined {
+  const match = source.match(new RegExp(`${key}\\s*:\\s*(\\d+)`))
+  return match ? Number(match[1]) : undefined
+}
+
+function readOptionalStringArrayField(source: string, key: string): string[] | null | undefined {
+  const match = source.match(new RegExp(`${key}\\s*:\\s*\\[([\\s\\S]*?)\\]`))
+  if (!match) return undefined
+  try {
+    const value: unknown = JSON.parse(`[${match[1]}]`)
+    return Array.isArray(value) && value.every((item) => typeof item === "string") ? value : null
+  } catch {
+    return null
+  }
+}
+
+function validateSlotLabels(folderName: string, key: "inputLabels" | "outputLabels", labels: string[] | null | undefined, count: number) {
+  if (labels === undefined) return
+  if (labels === null || labels.length === 0 || labels.some((label) => !label.trim())) {
+    errors.push(`${folderName}: ${key} 必须是非空字符串数组`)
+    return
+  }
+  if (labels.length !== count) {
+    errors.push(`${folderName}: ${key} 长度必须等于 ${key === "inputLabels" ? "inputCount" : "outputCount"}（${count}），当前为 ${labels.length}`)
+  }
+}
+
 const errors: string[] = []
 
 for (const dir of listToolDirs()) {
@@ -46,6 +73,16 @@ for (const dir of listToolDirs()) {
   for (const key of ["name", "description", "category", "inputKind", "outputKind"]) {
     if (!readStringField(source, key)) errors.push(`${folderName}: manifest.${key} 不能为空`)
   }
+  const inputCount = readNumberField(source, "inputCount")
+  if (inputCount !== undefined && (!Number.isInteger(inputCount) || inputCount < 1)) {
+    errors.push(`${folderName}: inputCount 必须是正整数，当前为 ${inputCount}`)
+  }
+  const outputCount = readNumberField(source, "outputCount")
+  if (outputCount !== undefined && (!Number.isInteger(outputCount) || outputCount < 1)) {
+    errors.push(`${folderName}: outputCount 必须是正整数，当前为 ${outputCount}`)
+  }
+  validateSlotLabels(folderName, "inputLabels", readOptionalStringArrayField(source, "inputLabels"), inputCount ?? 1)
+  validateSlotLabels(folderName, "outputLabels", readOptionalStringArrayField(source, "outputLabels"), outputCount ?? 1)
 }
 
 if (errors.length > 0) {
