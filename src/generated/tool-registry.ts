@@ -8,12 +8,13 @@ import { tool as tool_5 } from "../../tools/builtin/fields-to-dml-sql/index"
 import { tool as tool_6 } from "../../tools/builtin/json-format/index"
 import { tool as tool_7 } from "../../tools/builtin/json-minify/index"
 import { tool as tool_8 } from "../../tools/builtin/kebab-to-camel/index"
-import { tool as tool_9 } from "../../tools/builtin/lower-to-upper/index"
-import { tool as tool_10 } from "../../tools/builtin/oracle-field-check/index"
-import { tool as tool_11 } from "../../tools/builtin/remove-empty-lines/index"
-import { tool as tool_12 } from "../../tools/builtin/sort-lines/index"
-import { tool as tool_13 } from "../../tools/builtin/trim-lines/index"
-import { tool as tool_14 } from "../../tools/builtin/upper-to-lower/index"
+import { tool as tool_9 } from "../../tools/builtin/lines-to-in-clause/index"
+import { tool as tool_10 } from "../../tools/builtin/lower-to-upper/index"
+import { tool as tool_11 } from "../../tools/builtin/oracle-field-check/index"
+import { tool as tool_12 } from "../../tools/builtin/remove-empty-lines/index"
+import { tool as tool_13 } from "../../tools/builtin/sort-lines/index"
+import { tool as tool_14 } from "../../tools/builtin/trim-lines/index"
+import { tool as tool_15 } from "../../tools/builtin/upper-to-lower/index"
 
 export const tools: RegisteredTool[] = [
   tool_0,
@@ -30,5 +31,6 @@ export const tools: RegisteredTool[] = [
   tool_11,
   tool_12,
   tool_13,
-  tool_14
+  tool_14,
+  tool_15
 ]

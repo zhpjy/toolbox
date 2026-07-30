@@ -196,6 +196,28 @@ export const toolSearchIndex = [
     "text": "烤串转驼峰命名 将 kebab-case 或下划线分隔命名转换为 camelCase 文本处理 命名 字符串 前端 kebab-case camelCase 横线转驼峰 短横线转驼峰 kebab to camel"
   },
   {
+    "id": "lines-to-in-clause",
+    "name": "行转 SQL IN 子句",
+    "description": "按换行分隔多行文本，每行转成 SQL IN 子句中的引用值",
+    "category": "SQL",
+    "tags": [
+      "SQL",
+      "IN",
+      "拼接",
+      "行处理"
+    ],
+    "aliases": [
+      "in clause",
+      "行转IN",
+      "sql in",
+      "lines to in"
+    ],
+    "inputKind": "text",
+    "outputKind": "text",
+    "autoRun": true,
+    "text": "行转 SQL IN 子句 按换行分隔多行文本，每行转成 SQL IN 子句中的引用值 SQL SQL IN 拼接 行处理 in clause 行转IN sql in lines to in"
+  },
+  {
     "id": "lower-to-upper",
     "name": "小写转大写",
     "description": "将输入文本全部转换为大写",
