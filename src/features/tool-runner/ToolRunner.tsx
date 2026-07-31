@@ -345,8 +345,6 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
   function renderOutputArea(index: number) {
     const error = errors[index]
     const outputText = outputTexts[index]
-    const hasOutput = outputs[index] !== undefined
-    const isCopied = copyStatus?.index === index
 
     if (error) {
       return (
@@ -356,69 +354,15 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
       )
     }
 
-    const showCopyClear = hasOutput && !error
-
     switch (tool.manifest.outputKind) {
       case "text": {
         return (
-          <div className="relative">
-            <TextToolOutput value={outputText} />
-            {showCopyClear && (
-              <div className="absolute top-2 right-2 flex items-center gap-1.5">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleCopy(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="复制输出"
-                >
-                  <Copy className={`h-3.5 w-3.5 ${isCopied ? "text-primary" : ""}`} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleClear(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="清空输出"
-                >
-                  <Eraser className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            )}
-          </div>
+          <TextToolOutput value={outputText} />
         )
       }
       case "json": {
         return (
-          <div className="relative">
-            <JsonToolOutput value={outputText} />
-            {showCopyClear && (
-              <div className="absolute top-2 right-2 flex items-center gap-1.5">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleCopy(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="复制输出"
-                >
-                  <Copy className={`h-3.5 w-3.5 ${isCopied ? "text-primary" : ""}`} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleClear(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="清空输出"
-                >
-                  <Eraser className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            )}
-          </div>
+          <JsonToolOutput value={outputText} />
         )
       }
       case "diagnostics": {
@@ -426,33 +370,7 @@ export function ToolRunner({ tool, isFavorite, onFavoriteChange, onRunCommitted 
       }
       default: {
         return (
-          <div className="relative">
-            <TextToolOutput value={outputText} />
-            {showCopyClear && (
-              <div className="absolute top-2 right-2 flex items-center gap-1.5">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleCopy(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="复制输出"
-                >
-                  <Copy className={`h-3.5 w-3.5 ${isCopied ? "text-primary" : ""}`} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={() => handleClear(index)}
-                  disabled={isRunning}
-                  className="h-8 w-8"
-                  title="清空输出"
-                >
-                  <Eraser className="h-3.5 w-3.5" />
-                </Button>
-              </div>
-            )}
-          </div>
+          <TextToolOutput value={outputText} />
         )
       }
     }
