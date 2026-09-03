@@ -501,15 +501,14 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
                 <X className="h-4 w-4" />
               </Button>
             </div>
-            <div className="min-h-0 flex-1 p-3">
-              <div className="excel-compare-sheet excel-compare-diff h-full rounded-lg border bg-background p-2">
+            <div className="min-h-0 flex-1 overflow-auto p-3">
+              <div className="excel-compare-sheet excel-compare-diff min-w-full rounded-lg border bg-background p-2">
                 <HotTable
                   data={diffData}
                   rowHeaders
                   colHeaders
                   stretchH="all"
-                  height="100%"
-                  width="100%"
+                  height={Math.max(560, diffData.length * 24 + 60)}
                   licenseKey="non-commercial-and-evaluation"
                   readOnly
                   copyPaste
