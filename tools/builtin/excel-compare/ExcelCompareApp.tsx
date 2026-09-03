@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react"
 import { ArrowLeftRight, FileSpreadsheet, RefreshCcw } from "lucide-react"
 import { HotTable } from "@handsontable/react"
+import Handsontable from "handsontable"
 import { registerAllModules } from "handsontable/registry"
 import * as daff from "daff/lib/core.js"
 import * as XLSX from "xlsx"
@@ -12,6 +13,7 @@ import { Button } from "@/shared/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/shared/components/ui/card"
 import { Input } from "@/shared/components/ui/input"
 import { cn } from "@/shared/utils/cn"
+import { getModifyCellBackgroundColor } from "./modifyCellColor"
 import "./excel-compare.css"
 
 registerAllModules()
@@ -130,7 +132,7 @@ function resolveDiffClass(value: CellValue, rowIndex: number, colIndex: number, 
   return ""
 }
 
-function buildDiff(left: GridData, right: GridData) {
+export function buildDiff(left: GridData, right: GridData) {
   const leftTable = new daff.TableView(trimGrid(left))
   const rightTable = new daff.TableView(trimGrid(right))
   const alignment = daff.compareTables(leftTable, rightTable).align()
@@ -139,7 +141,10 @@ function buildDiff(left: GridData, right: GridData) {
   flags.always_show_header = true
   flags.always_show_order = true
   flags.never_show_order = false
-  flags.unchanged_context = true
+  // 与参考项目保持一致：差异前后各保留 3 行上下文。
+  // daff 的旧版类型将该字段错误声明为 boolean，运行时实际接受上下文行数。
+  const runtimeFlags = flags as unknown as { unchanged_context: number }
+  runtimeFlags.unchanged_context = 3
 
   const output = new daff.TableView([])
   const tableDiff = new daff.TableDiff(alignment, flags)
@@ -362,6 +367,16 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
     ["冲突", diffCounts.conflict]
   ] as const
 
+  function renderDiffCell(instance: any, td: HTMLTableCellElement, row: number, col: number, prop: string | number, value: CellValue, cellProperties: any) {
+    // 先使用 Handsontable 默认文本渲染，再为数值变更覆盖渐变背景色。
+    Handsontable.renderers.TextRenderer(instance, td, row, col, prop, value, cellProperties)
+    if (typeof value === "string" && value.includes("->")) {
+      td.style.setProperty("background-color", getModifyCellBackgroundColor(value), "important")
+    } else {
+      td.style.removeProperty("background-color")
+    }
+  }
+
   return (
     <div className="space-y-4">
       <div className="grid gap-4">
@@ -445,6 +460,7 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
               copyPaste
               manualColumnResize
               className="excel-compare-highlighter"
+              renderer={renderDiffCell}
               cells={(row, col) => ({ className: diffClasses[`${row}:${col}`] ?? "" })}
             />
           </div>
