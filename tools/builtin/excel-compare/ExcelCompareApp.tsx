@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from "react"
-import { ArrowLeftRight, FileSpreadsheet, RefreshCcw } from "lucide-react"
+import { ArrowLeftRight, FileSpreadsheet, Maximize2, RefreshCcw, X } from "lucide-react"
 import { HotTable } from "@handsontable/react"
 import Handsontable from "handsontable"
 import { registerAllModules } from "handsontable/registry"
@@ -281,6 +281,7 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
   const [diffClasses, setDiffClasses] = useState<Record<string, string>>({})
   const [diffCounts, setDiffCounts] = useState({ add: 0, remove: 0, modify: 0, move: 0, conflict: 0 })
   const [diffStatus, setDiffStatus] = useState("点击 Diff 开始比较")
+  const [isDiffExpanded, setIsDiffExpanded] = useState(false)
   const leftFileInputRef = useRef<HTMLInputElement>(null)
   const rightFileInputRef = useRef<HTMLInputElement>(null)
 
@@ -359,6 +360,15 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
     }
   }, [activeExample])
 
+  useEffect(() => {
+    if (!isDiffExpanded) return
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsDiffExpanded(false)
+    }
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [isDiffExpanded])
+
   const diffSummary = [
     ["新增", diffCounts.add],
     ["删除", diffCounts.remove],
@@ -423,17 +433,21 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
 
       <Card>
         <CardHeader className="space-y-3 pb-4">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-            <div>
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+              <div>
               <CardTitle className="text-base">Diff 结果</CardTitle>
               <p className="mt-1 text-sm text-muted-foreground">{diffStatus}</p>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {diffSummary.map(([label, count]) => (
                 <Badge key={label} variant="outline" className={cn("min-w-16 justify-center", count > 0 && "font-semibold")}>
                   {label} {count}
                 </Badge>
               ))}
+              <Button variant="outline" size="sm" onClick={() => setIsDiffExpanded(true)} disabled={diffData.length === 0}>
+                <Maximize2 className="mr-2 h-4 w-4" />
+                放大查看
+              </Button>
             </div>
           </div>
         </CardHeader>
@@ -466,6 +480,49 @@ export default function ExcelCompareApp({ activeExample }: ToolAppComponentProps
           </div>
         </CardContent>
       </Card>
+
+      {isDiffExpanded ? (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="放大查看 Diff 结果"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setIsDiffExpanded(false)
+          }}
+        >
+          <div className="flex h-[min(92vh,900px)] w-[min(96vw,1600px)] flex-col overflow-hidden rounded-xl border bg-background shadow-2xl">
+            <div className="flex items-center justify-between border-b px-4 py-3">
+              <div>
+                <h2 className="text-base font-semibold">Diff 结果</h2>
+                <p className="text-xs text-muted-foreground">{diffStatus}</p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setIsDiffExpanded(false)} aria-label="关闭放大查看">
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+            <div className="min-h-0 flex-1 p-3">
+              <div className="excel-compare-sheet excel-compare-diff h-full rounded-lg border bg-background p-2">
+                <HotTable
+                  data={diffData}
+                  rowHeaders
+                  colHeaders
+                  stretchH="all"
+                  height="100%"
+                  width="100%"
+                  licenseKey="non-commercial-and-evaluation"
+                  readOnly
+                  copyPaste
+                  manualColumnResize
+                  className="excel-compare-highlighter"
+                  renderer={renderDiffCell}
+                  cells={(row, col) => ({ className: diffClasses[`${row}:${col}`] ?? "" })}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }
